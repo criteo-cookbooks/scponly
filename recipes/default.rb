@@ -32,3 +32,8 @@ node['scponly']['shells'].each do |name, conf|
     not_if "grep #{conf['path']} /etc/shells"
   end
 end
+
+cookbook_file ::File.join(Chef::Config[:file_cache_path], 'f2chroot.sh') do
+  mode '0755'
+  source 'f2chroot.sh'
+end
