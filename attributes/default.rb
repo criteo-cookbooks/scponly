@@ -8,6 +8,5 @@
 #
 
 default['scponly']['pkgs']                       = ['scponly']
-default['scponly']['chroot_path']                = '/var/opt/scponly-chroot'
 default['scponly']['shells']['scponly']['path']  = '/usr/bin/scponly'
 default['scponly']['shells']['scponlyc']['path'] = '/usr/sbin/scponlyc'

@@ -59,6 +59,10 @@ action :create do
     dev_chroot_path  = ::File.join(user_chroot_path, 'dev')
     f2chroot         = ::File.join(Chef::Config[:file_cache_path], 'f2chroot.sh')
 
+    directory dev_chroot_path do
+      recursive true
+    end
+
     converge_by "creating chroot environment for #{new_resource.name}" do
       binaries_list(@os_family).each do |binary|
         execute "Copying #{binary} and dependencies into chroot" do
@@ -71,8 +75,6 @@ action :create do
     # everything after the // is the subdir to chdir into after chrooting. ]--
     user_home  = user_chroot_path + '/' + new_resource.home
     user_shell = @scponlyc['path']
-
-    directory dev_chroot_path
 
     execute "Creating null device for #{new_resource.name}" do
       command 'mknod -m 666 null c 1 3'
@@ -123,7 +125,7 @@ end
 action :delete do
   unless new_resource.preserved_home
     converge_by "removing chroot && home for #{new_resource.name}" do
-      dir_name = new_resource.chroot_path || new_resource.home
+      dir_name = new_resource.chroot_path ? ::File.join(new_resource.chroot_path, new_resource.name) : new_resource.home
       directory dir_name do
         recursive true
         action :delete

@@ -18,10 +18,6 @@
 #
 include_recipe 'yum-epel'
 
-directory node['scponly']['chroot_path'] do
-  recursive true
-end
-
 node['scponly']['pkgs'].each do |pkg|
   package pkg
 end
