@@ -16,3 +16,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+include_recipe 'yum-epel'
+
+directory node['scponly']['chroot_path'] do
+  recursive true
+end
+
+node['scponly']['pkgs'].each do |pkg|
+  package pkg
+end
+
+node['scponly']['shells'].each do |name, conf|
+  execute "Adding #{name} into system shells" do
+    command "echo #{conf['path']} >> /etc/shells"
+    not_if "grep #{conf['path']} /etc/shells"
+  end
+end
