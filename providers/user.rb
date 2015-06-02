@@ -67,12 +67,10 @@ action :create do
       recursive true
     end
 
-    converge_by "creating chroot environment for #{new_resource.name}" do
-      binaries_list(@os_family).each do |binary|
-        execute "Copying #{binary} and dependencies into chroot" do
-          command "#{f2chroot} -r #{user_chroot_path} #{binary}"
-          creates ::File.join(user_chroot_path, binary)
-        end
+    binaries_list(@os_family).each do |binary|
+      execute "Copying #{binary} and dependencies into chroot" do
+        command "#{f2chroot} -r #{user_chroot_path} #{binary}"
+        creates ::File.join(user_chroot_path, binary)
       end
     end
     # --[ SCPONLY: Everything before the // is the directory to chroot into and
@@ -91,37 +89,37 @@ action :create do
     user_shell = @scponly['path']
   end
 
-  converge_by "creating user: #{new_resource.name}" do
-    user new_resource.name do
-      comment "SCPONLY user #{new_resource.name}"
-      home user_home
-      shell user_shell
-      password new_resource.password
-    end
+  directory ::File.dirname(user_home) do
+    recursive true
+  end
 
-    directory user_home do
-      user new_resource.name
-      group new_resource.name
-    end
+  user new_resource.name do
+    comment "SCPONLY user #{new_resource.name}"
+    home user_home
+    shell user_shell
+    password new_resource.password
+  end
+
+  directory user_home do
+    user new_resource.name
+    group new_resource.name
   end
 
   if new_resource.chrooted
-    converge_by "creating authentification files for #{new_resource.name}" do
-      passwd_file = ::File.join(user_chroot_path, 'etc', 'passwd')
-      group_file  = ::File.join(user_chroot_path, 'etc', 'group')
+    passwd_file = ::File.join(user_chroot_path, 'etc', 'passwd')
+    group_file  = ::File.join(user_chroot_path, 'etc', 'group')
 
-      execute "Creating for #{new_resource.name} /etc/passwd" do
-        command "egrep \"^root|#{new_resource.name}\" /etc/passwd | \
-          sed -e 's@#{user_home}@#{new_resource.home}@g' \
-            -e 's/SCPONLY\ //g' \
-            -e 's@#{user_shell}@/bin/false@g' > #{passwd_file}"
-        not_if "grep #{new_resource.name} #{passwd_file}"
-      end
+    execute "Creating for #{new_resource.name} /etc/passwd" do
+      command "egrep \"^root|#{new_resource.name}\" /etc/passwd | \
+        sed -e 's@#{user_home}@#{new_resource.home}@g' \
+          -e 's/SCPONLY\ //g' \
+          -e 's@#{user_shell}@/bin/false@g' > #{passwd_file}"
+      not_if "grep #{new_resource.name} #{passwd_file}"
+    end
 
-      execute "Creating for #{new_resource.name}/etc/group" do
-        command "egrep \"^root|#{new_resource.name}|users\" /etc/group > #{group_file}"
-        not_if "grep #{new_resource.name} #{group_file}"
-      end
+    execute "Creating for #{new_resource.name}/etc/group" do
+      command "egrep \"^root|#{new_resource.name}|users\" /etc/group > #{group_file}"
+      not_if "grep #{new_resource.name} #{group_file}"
     end
   end
 
@@ -145,18 +143,14 @@ end
 
 action :delete do
   unless new_resource.preserved_home
-    converge_by "removing chroot && home for #{new_resource.name}" do
-      dir_name = new_resource.chroot_path ? ::File.join(new_resource.chroot_path, new_resource.name) : new_resource.home
-      directory dir_name do
-        recursive true
-        action :delete
-      end
+    dir_name = new_resource.chroot_path ? ::File.join(new_resource.chroot_path, new_resource.name) : new_resource.home
+    directory dir_name do
+      recursive true
+      action :delete
     end
   end
 
-  converge_by "removing user: #{new_resource.name}" do
-    user new_resource.name do
-      action :remove
-    end
+  user new_resource.name do
+    action :remove
   end
 end
