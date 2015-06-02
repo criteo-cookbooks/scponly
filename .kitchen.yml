@@ -4,33 +4,14 @@ driver:
 provisioner:
   name: chef_zero
 platforms:
-- name: centos-6.5
+- name: centos-6.4
   driver_plugin: vagrant
   provisioner:
     require_chef_omnibus: true
-    chef_omnibus_url: http://repo-par.criteo.prod:8080/omnibus_install.sh
   driver_config:
-    box: opscode-centos-6.5
-    box_url: http://filer.criteo.prod/boxes/opscode-centos-6.5.box
-- name: windows-2008r2
-  driver_plugin: vagrant_winrm
-  provisioner:
-    sudo: false
-    root_path: C:/var/chef
-    chef_client_path: C:/opscode/chef/bin/chef-client
-    chef_omnibus_root: C:/opscode/chef/bin
-    ruby_bindir: C:/opscode/chef/embedded/bin
-  driver_config:
-    vm_hostname: false
-    provision: true
-    custom_settings:
-      omnibus.chef_version: 11.16.4
-      omnibus.install_url: http://filer.criteo.prod/remote_files/chef-client-criteo/chef-client-11.16.4-1.windows.msi
-    box: windows-2008r2-web-core
-    box_url: http://filer.criteo.prod/boxes/windows-2008r2-web-core.box
+    box_url: https://opscode-vm-bento.s3.amazonaws.com/vagrant/opscode_centos-6.4_provisionerless.box
 suites:
 - name: default
-  excludes: windows-2008r2
   run_list:
-  - recipe[scponly::default]
+  - recipe[scponly_test::default]
   attributes:
