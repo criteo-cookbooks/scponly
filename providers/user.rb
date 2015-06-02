@@ -21,7 +21,7 @@ end
 
 def binaries_list(os_family)
   # This list is extracted from the scponly file: BUILDING-JAILS.TXT
-  bin_list = [
+  bin_original = [
     '/bin/chmod',
     '/bin/chown',
     '/bin/chgrp',
@@ -40,16 +40,20 @@ def binaries_list(os_family)
     '/usr/bin/rsync',
     '/usr/bin/scp',
   ]
+  bin_list = []
+  # Making sure the binary is present
+  bin_original.each do |binary|
+    bin_list << binary if ::File.exist?(binary)
+  end
   case os_family
   when /(?i-mx:debian)/
     bin_list << '/usr/lib/openssh/sftp-server'
-    # Now the glibc compat libraries
     lib_path = '/lib'
   when /(?i-mx:rhel)/
     bin_list << '/usr/libexec/openssh/sftp-server'
-    # Now the glibc compat libraries
     lib_path = '/lib64'
   end
+  # Now the glibc compat libraries
   bin_list.concat(::Dir.glob(::File.join(lib_path, '**', 'libnss_*'))).sort
 end
 
