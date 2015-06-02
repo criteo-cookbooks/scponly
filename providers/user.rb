@@ -120,6 +120,23 @@ action :create do
       end
     end
   end
+
+  if new_resource.ssh_keys
+    ssh_dir = ::File.join(user_home, '.ssh')
+
+    directory ssh_dir do
+      user 'root'
+      group 'root'
+      mode '0755'
+    end
+
+    file ::File.join(ssh_dir, 'authorized_keys') do
+      owner 'root'
+      group 'root'
+      mode '0644'
+      content new_resource.ssh_keys.join("\n")
+    end
+  end
 end
 
 action :delete do
