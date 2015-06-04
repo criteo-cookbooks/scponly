@@ -31,19 +31,30 @@ file '/tmp/copy_file' do
 end
 
 scponly_user 'chroot_test_passwd' do
-  chrooted true
   # Setting passwd to 'test'
   password '$6$YQpME/DN$4.h5fNLSg7FLHY3smHzYFCGoI6YpafMyO6QNHMoiGUKePYPSdn9LgSZrxzwLAdtRTgiPhAUZbp0uHcsGGjlJv.'
 end
 
 scponly_user 'chroot_test2_ssh_key' do
-  chrooted true
   ssh_keys ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDf/WTHmZdrXVbeCDl6Qtt27qcpNZPgTfSgcU6qzJgsPnlBIEddHMZTDziK+MFR2bYfMq1lWUyrZD83nmm/TZRxNAzn8TerEb6ERxsn9TFuTjkq8HmpSbhCq9a+2YlWk/lp/+oeJdZoQmNVB8xQ/g7uvuncxUPkKGHx4Smxeuq6Mw== test2@kitchen-test']
 end
 
 scponly_user 'test_passwd' do
   chrooted false
   home '/home/test_passwd/incoming'
+  # Setting passwd to 'test'
+  password '$6$YQpME/DN$4.h5fNLSg7FLHY3smHzYFCGoI6YpafMyO6QNHMoiGUKePYPSdn9LgSZrxzwLAdtRTgiPhAUZbp0uHcsGGjlJv.'
+end
+
+scponly_user 'test_passwd_to_remove' do
+  chrooted false
+  home '/home/test_passwd_to_remove/incoming'
+  # Setting passwd to 'test'
+  password '$6$YQpME/DN$4.h5fNLSg7FLHY3smHzYFCGoI6YpafMyO6QNHMoiGUKePYPSdn9LgSZrxzwLAdtRTgiPhAUZbp0uHcsGGjlJv.'
+end
+
+scponly_user 'chroot_to_remove_totally' do
+  home '/home/chroot_to_remove_totally/incoming'
   # Setting passwd to 'test'
   password '$6$YQpME/DN$4.h5fNLSg7FLHY3smHzYFCGoI6YpafMyO6QNHMoiGUKePYPSdn9LgSZrxzwLAdtRTgiPhAUZbp0uHcsGGjlJv.'
 end
@@ -61,4 +72,14 @@ end
 
 execute 'Testing user "test2_ssh_key"' do
   command "scp #{scp_args} /tmp/copy_file test2_ssh_key@localhost:"
+end
+
+# --[ Removing users ]--
+scponly_user 'test_passwd_to_remove' do
+  action :delete
+end
+
+scponly_user 'chroot_to_remove_totally' do
+  preserved_home false
+  action :delete
 end
