@@ -142,15 +142,11 @@ action :create do
 end
 
 action :delete do
-  unless new_resource.preserved_home
-    dir_name = new_resource.chroot_path ? ::File.join(new_resource.chroot_path, new_resource.name) : new_resource.home
-    directory dir_name do
-      recursive true
-      action :delete
-    end
-  end
-
   user new_resource.name do
+    unless new_resource.preserved_home
+      supports manage_home: true
+      force true if Chef::VERSION.to_s.to_i > 12
+    end
     action :remove
   end
 end

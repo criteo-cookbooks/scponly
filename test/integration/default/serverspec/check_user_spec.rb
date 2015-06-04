@@ -29,6 +29,15 @@ describe 'Checking no chroot user' do
     end
   end
 
+  describe 'user to delete preserved home' do
+    describe user('test_passwd_to_remove') do
+      it { should_not exist }
+    end
+    describe file('/home/test_passwd_to_remove/incoming') do
+      it { should be_directory }
+    end
+  end
+
   describe 'user with no password' do
     describe user('test2_ssh_key') do
       it { should exist }
@@ -53,6 +62,16 @@ describe 'Checking chroot user' do
     describe file('/var/opt/scponly-chroot/chroot_test_passwd/incoming') do
       it { should be_directory }
       it { should be_owned_by 'chroot_test_passwd' }
+    end
+  end
+
+  describe 'user to delete totally' do
+    describe user('chroot_to_remove_totally') do
+      it { should_not exist }
+    end
+    describe file('/var/opt/scponly-chroot/home/chroot_to_remove_totally/incoming') do
+      it { should_not be_directory }
+      it { should_not be_file }
     end
   end
 
