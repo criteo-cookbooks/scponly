@@ -37,7 +37,7 @@ This LWRP provides an easy way to create `scponly` users
 #### Attribute Parameters
 - `name`: name attribute. The name of the user
 - `chrooted`: does the user need a chrooted environment (default: `true`)
-- `home`: provides the user's home path (default: `/incoming`)
+- `home`: provides the user's home path inside the chroot environment if one (default: `/incoming`)
 - `chroot_path`: the path where to create the chroot environment if needed (default: `/var/opt/scponly-chroot`)
 - `password`: the encrypted user password (default: `nil`)
 - `ssh_keys`: array with all the `authorized_keys` for the user (default: `nil`)
