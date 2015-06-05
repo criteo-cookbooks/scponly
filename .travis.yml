@@ -5,7 +5,7 @@ deploy:
   edge: true
   provider: chef-supermarket
   user_id: criteo
-  cookbook_category: Process Management
+  cookbook_category: Utilities
   client_key: ".travis/client.pem"
   on:
     tags: true
