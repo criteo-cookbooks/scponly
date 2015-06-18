@@ -17,7 +17,6 @@
 # limitations under the License.
 #
 
-include_recipe 'yum'
 include_recipe 'scponly'
 
 scponly_user 'chroot_test_passwd' do

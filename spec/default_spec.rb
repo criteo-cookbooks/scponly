@@ -4,13 +4,14 @@
 require 'spec_helper'
 
 describe 'scponly::default' do
-  let (:chef_run) do
+  let(:chef_run) do
     chef_runner = ChefSpec::ServerRunner.new(
       platform: 'centos',
       version: '6.5',
     )
     chef_runner.converge(described_recipe)
   end
+
   before do
     stub_command('grep /usr/bin/scponly /etc/shells').and_return(false)
     stub_command('grep /usr/sbin/scponlyc /etc/shells').and_return(false)
