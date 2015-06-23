@@ -142,7 +142,7 @@ action :create do
 end
 
 action :delete do
-  user new_resource.name do
+  user new_resource.name do # ~FC009
     unless new_resource.preserved_home
       supports manage_home: true
       force true if Chef::VERSION.to_s.to_i > 12
