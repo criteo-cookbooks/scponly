@@ -7,7 +7,7 @@ Install `scponly` package and configure `scponly` shells ([Scponly wiki](https:/
 
 Requirements
 ------------
-- Chef 11 or higher
+- Chef 12 or higher
 
 ### Platform
 The release was tested on:
