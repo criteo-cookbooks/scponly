@@ -124,6 +124,7 @@ action :create do
   end
 
   if new_resource.ssh_keys
+    user_chroot_path ||= ''
     ssh_dir = ::File.join(user_chroot_path, new_resource.home, '.ssh')
 
     directory ssh_dir do
