@@ -7,6 +7,6 @@
 #
 #
 
-default['scponly']['pkgs']                       = ['scponly']
+default['scponly']['pkgs']['scponly'] = nil
 default['scponly']['shells']['scponly']['path']  = '/usr/bin/scponly'
 default['scponly']['shells']['scponlyc']['path'] = '/usr/sbin/scponlyc'

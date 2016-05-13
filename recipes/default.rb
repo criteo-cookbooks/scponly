@@ -18,8 +18,10 @@
 #
 include_recipe 'yum-epel'
 
-node['scponly']['pkgs'].each do |pkg|
-  package pkg
+node['scponly']['pkgs'].each do |pkg, vers|
+  package pkg do
+    version vers unless vers.nil?
+  end
 end
 
 node['scponly']['shells'].each do |name, conf|
