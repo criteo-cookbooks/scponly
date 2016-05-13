@@ -20,7 +20,7 @@ Cookbook Dependencies
 
 Attributes
 ----------
-- `node['scponly']['pkgs']` - packages' name to install (default: `[ "scponly" ]`)
+- `node['scponly']['pkgs']` - packages' name to install with version if needed (default: `{ scponly: nil }`)
 - `node['scponly']['shell']['scponly']['path']` - the shell path for `scponly` shell (default: `/usr/bin/scponly`)
 - `node['scponly']['shells']['scponlyc']['path']` - the shell path for `scponlyc` shell (default: `/usr/sbin/scponlyc`)
 
