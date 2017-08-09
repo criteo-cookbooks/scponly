@@ -7,7 +7,7 @@ describe 'scponly::default' do
   let(:chef_run) do
     chef_runner = ChefSpec::ServerRunner.new(
       platform: 'centos',
-      version: '6.5',
+      version:  '6.5',
     )
     chef_runner.converge(described_recipe)
   end
@@ -23,7 +23,7 @@ describe 'scponly::default' do
 
   it 'creates "f2chroot.sh"' do
     expect(chef_run).to create_cookbook_file(File.join(Chef::Config[:file_cache_path], 'f2chroot.sh')).with(
-      mode: '0755',
+      mode:   '0755',
       source: 'f2chroot.sh',
     )
   end
@@ -35,7 +35,7 @@ describe 'scponly::default' do
     end
     it 'creates "f2chroot.sh"' do
       expect(chef_run).to create_cookbook_file(File.join(Chef::Config[:file_cache_path], 'f2chroot.sh')).with(
-        mode: '0755',
+        mode:   '0755',
         source: 'f2chroot.sh',
       )
     end
@@ -52,7 +52,7 @@ describe 'scponly::default' do
     end
     it 'creates "f2chroot.sh"' do
       expect(chef_run).to create_cookbook_file(File.join(Chef::Config[:file_cache_path], 'f2chroot.sh')).with(
-        mode: '0755',
+        mode:   '0755',
         source: 'f2chroot.sh',
       )
     end

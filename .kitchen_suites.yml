@@ -1,0 +1,6 @@
+- name: default
+  run_list:
+  - recipe[scponly_test::default]
+  attributes:
+  excludes:
+  - windows-2012r2

@@ -14,7 +14,10 @@ driver:
   name: ec2
   instance_type: t2.micro
   associate_public_ip: true
+  iam_profile_name: test-kitchen
   region: <%= ENV['AWS_REGION'] || 'us-west-2' %>
+  tags:
+    created-by: <%= ENV['AWS_SSH_KEY_ID'] %>
   subnet_filter:
     tag:   'Name'
     value: <%= ENV['AWS_SUBNET'] || 'chef-testing-opensource-vpc-subnet' %>
@@ -30,15 +33,16 @@ driver:
 transport:
   ssh_key: <%= ENV['HOME'] %>/.ssh/id_rsa
 
-provisioner:
-  name: chef_zero
-
 platforms:
   - name: centos-6
     driver:
       image_id: ami-05cf2265
+  - name: centos-7
+    driver:
+      image_id: ami-d2c924b2
+  - name: windows-2012r2
+    driver:
+      image_id: ami-b871aad8
+
 suites:
-  - name: default
-    run_list:
-      - recipe[selinux::permissive]
-      - recipe[scponly_test::default]
+<%= require 'erubis'; Erubis::Eruby.new(File.read('.kitchen_suites.yml')).evaluate %>

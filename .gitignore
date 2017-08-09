@@ -1,15 +1,11 @@
+.vagrant
+Berksfile.lock
 *~
 *#
 .#*
 \#*#
 .*.sw[a-z]
 *.un~
-pkg/
-
-# Berkshelf
-.vagrant
-/cookbooks
-Berksfile.lock
 
 # Bundler
 Gemfile.lock
@@ -18,6 +14,5 @@ bin/*
 
 .kitchen/
 .kitchen.local.yml
-.tmp/
 
-*.pem
+.cookbook_version
