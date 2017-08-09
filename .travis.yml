@@ -1,6 +1,6 @@
 language: ruby
 rvm:
-- 2.1
+- 2.3.2
 deploy:
   edge: true
   provider: chef-supermarket

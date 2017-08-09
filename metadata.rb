@@ -1,13 +1,15 @@
 name             'scponly'
 maintainer       'Criteo'
-maintainer_email 'j.mauro@criteo.com'
-license          'Apache 2.0'
+maintainer_email 'sre-core-infra@criteo.com'
+license          'Apache-2.0'
 description      'Installs/Configures scponly'
-issues_url       'https://github.com/criteo-cookbooks/scponly/issues' if respond_to?(:issue_url)
-source_url       'https://github.com/criteo-cookbooks/scponly' if respond_to?(:source_url)
-long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+long_description 'Scponly Cookbook
+Install `scponly` package and configure `scponly` shells ([Scponly wiki](https://github.com/scponly/scponly/wiki))
+'
+issues_url       'https://github.com/criteo-cookbooks/scponly'
+source_url       'https://github.com/criteo-cookbooks/scponly'
 version          '1.0.0'
+supports         'centos'
+supports         'redhat'
 depends          'yum-epel'
-%w(centos rhel).each do |os|
-  supports os
-end
+chef_version     '> 12.5.0'

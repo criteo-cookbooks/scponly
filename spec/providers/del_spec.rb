@@ -6,8 +6,8 @@ describe 'scponly_test::delete_user' do
     ChefSpec::SoloRunner.new(
       step_into: ['scponly_user'],
       log_level: :debug,
-      platform: 'centos',
-      version: '6.5',
+      platform:  'centos',
+      version:   '6.5',
     ).converge(described_recipe)
   end
 
@@ -23,13 +23,13 @@ describe 'scponly_test::delete_user' do
 
   it 'delete user "test_passwd_to_remove"' do
     expect(chef_run).to remove_user('test_passwd_to_remove').with(
-      supports: { manage_home: false, non_unique: false },
+      manage_home: false, non_unique: false,
     )
   end
 
   it 'delete user "chroot_to_remove_totally"' do
     expect(chef_run).to remove_user('chroot_to_remove_totally').with(
-      supports: { manage_home: true },
+      manage_home: true,
     )
   end
 end
