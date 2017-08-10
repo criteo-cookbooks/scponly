@@ -24,6 +24,11 @@ node['scponly']['pkgs'].each do |pkg, vers|
   end
 end
 
+file '/sbin/scponlyc' do
+  # Bug in the EPEL rpm the shell "/sbin/scponlyc" is not setuid dor user
+  mode '4755'
+end
+
 node['scponly']['shells'].each do |name, conf|
   execute "Adding #{name} into system shells" do
     command "echo #{conf['path']} >> /etc/shells"
