@@ -33,6 +33,7 @@ def binaries_list(os_family)
     '/bin/pwd',
     '/bin/rm',
     '/bin/rmdir',
+    '/bin/rsync',
     '/etc/ld.so.cache',
     '/etc/ld.so.conf',
     '/usr/bin/id',
