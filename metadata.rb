@@ -8,7 +8,7 @@ Install `scponly` package and configure `scponly` shells ([Scponly wiki](https:/
 '
 issues_url       'https://github.com/criteo-cookbooks/scponly/issues' if respond_to?(:issues_url)
 source_url       'https://github.com/criteo-cookbooks/scponly' if respond_to?(:source_url)
-version          '1.1.0'
+version          '1.2.0'
 supports         'centos'
 supports         'redhat'
 depends          'yum-epel'
