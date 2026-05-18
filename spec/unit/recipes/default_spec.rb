@@ -5,9 +5,9 @@ require 'spec_helper'
 
 describe 'scponly::default' do
   let(:chef_run) do
-    chef_runner = ChefSpec::ServerRunner.new(
+    chef_runner = ChefSpec::SoloRunner.new(
       platform: 'centos',
-      version:  '6.5',
+      version:  '8',
     )
     chef_runner.converge(described_recipe)
   end

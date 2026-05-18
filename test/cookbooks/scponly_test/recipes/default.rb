@@ -17,9 +17,22 @@
 # limitations under the License.
 #
 
-# Disable SELINUX on EC2
-node.default['selinux']['status'] = 'permissive'
-include_recipe 'selinux'
+# To get scp
+openssh_client 'default'
+# To get sshd (listening - without PAM - to be able to test scponly users)
+openssh_server 'default' do
+  port 22
+  options(
+    'challenge_response_authentication' => 'no',
+    'host_key' => [
+      '/etc/ssh/ssh_host_rsa_key',
+      '/etc/ssh/ssh_host_ecdsa_key',
+      '/etc/ssh/ssh_host_ed25519_key',
+    ],
+    'use_p_a_m' => 'no',
+  )
+end
+
 include_recipe 'scponly'
 
 ['id_rsa_test2'].each do |name|
@@ -39,6 +52,8 @@ scponly_user 'chroot_test_passwd' do
 end
 
 scponly_user 'chroot_test2_ssh_key' do
+  # Setting passwd to 'test'
+  password '$6$YQpME/DN$4.h5fNLSg7FLHY3smHzYFCGoI6YpafMyO6QNHMoiGUKePYPSdn9LgSZrxzwLAdtRTgiPhAUZbp0uHcsGGjlJv.'
   ssh_keys ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDf/WTHmZdrXVbeCDl6Qtt27qcpNZPgTfSgcU6qzJgsPnlBIEddHMZTDziK+MFR2bYfMq1lWUyrZD83nmm/TZRxNAzn8TerEb6ERxsn9TFuTjkq8HmpSbhCq9a+2YlWk/lp/+oeJdZoQmNVB8xQ/g7uvuncxUPkKGHx4Smxeuq6Mw== test2@kitchen-test'] # rubocop:disable Metrics/LineLength
 end
 
@@ -65,10 +80,12 @@ end
 scponly_user 'test2_ssh_key' do
   chrooted false
   home '/home/test2_ssh_key/incoming'
+  # Setting passwd to 'test'
+  password '$6$YQpME/DN$4.h5fNLSg7FLHY3smHzYFCGoI6YpafMyO6QNHMoiGUKePYPSdn9LgSZrxzwLAdtRTgiPhAUZbp0uHcsGGjlJv.'
   ssh_keys ['ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAAAgQDf/WTHmZdrXVbeCDl6Qtt27qcpNZPgTfSgcU6qzJgsPnlBIEddHMZTDziK+MFR2bYfMq1lWUyrZD83nmm/TZRxNAzn8TerEb6ERxsn9TFuTjkq8HmpSbhCq9a+2YlWk/lp/+oeJdZoQmNVB8xQ/g7uvuncxUPkKGHx4Smxeuq6Mw== test2@kitchen-test'] # rubocop:disable Metrics/LineLength
 end
 
-scp_args = "-o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i #{::File.join(Chef::Config[:file_cache_path], 'id_rsa_test2')}"
+scp_args = "-vvvv -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -i #{::File.join(Chef::Config[:file_cache_path], 'id_rsa_test2')}"
 execute 'Testing user "chroot_test2_ssh_key"' do
   command "scp #{scp_args} /tmp/copy_file chroot_test2_ssh_key@localhost:"
 end

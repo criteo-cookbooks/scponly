@@ -6,7 +6,7 @@ describe 'scponly_test::add_user' do
     ChefSpec::SoloRunner.new(
       step_into: ['scponly_user'],
       platform: 'centos',
-      version: '6.5',
+      version: '8',
     ).converge(described_recipe)
   end
 
@@ -34,6 +34,7 @@ describe 'scponly_test::add_user' do
 
   it 'creates user "chroot_test2_ssh_key"' do
     expect(chef_run).to create_user('chroot_test2_ssh_key').with(
+      password: '$6$YQpME/DN$4.h5fNLSg7FLHY3smHzYFCGoI6YpafMyO6QNHMoiGUKePYPSdn9LgSZrxzwLAdtRTgiPhAUZbp0uHcsGGjlJv.',
       home: '/var/opt/scponly-chroot/chroot_test2_ssh_key//incoming',
       shell: '/usr/sbin/scponlyc',
     )

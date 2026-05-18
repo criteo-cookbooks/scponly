@@ -88,6 +88,8 @@ CONTRIBUTING*
 CHANGELOG*
 TESTING*
 MAINTAINERS.toml
+Policyfile.rb
+Policyfile.lock.json
 
 # Strainer #
 ############

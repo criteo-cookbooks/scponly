@@ -7,10 +7,37 @@
 #
 #
 
-require 'serverspec'
+# Patch the User resource to be able to get authorized_keys content for the specified User instead of root
+# See https://github.com/inspec/inspec/issues/7910 and remove once fixed
+module InspecUserPatch
+  # rubocop:disable Naming/AccessorMethodName
+  def get_authorized_keys
+    # cat is used in unix system to display content of file; similarly type is used for windows
+    bin = inspec.os.windows? ? 'type' : 'cat'
 
-# Required by serverspec
-set :backend, :exec
+    # auth_path gets assigned with the valid path for authorized_keys
+    auth_path = ''
+
+    # possible paths where authorized_keys are stored
+    # inspec.command is used over inspec.file because inspec.file requires absolute path
+    %W[~#{@username}/.ssh/authorized_keys ~#{@username}/.ssh/authorized_keys2].each do |path|
+      if inspec.command("#{bin} #{path}").exit_status.zero?
+        auth_path = path
+        break
+      end
+    end
+
+    # if auth_path is empty, no valid path was found, hence raise exception
+    raise Inspec::Exceptions::ResourceSkipped, "Can't find any valid path for authorized_keys" if auth_path.empty?
+
+    # authorized_keys are obtained in the standard output;
+    # split keys on newline if more than one keys are part of authorized_keys
+    inspec.command("#{bin} #{auth_path}").stdout.split("\n").map(&:strip)
+  end
+  # rubocop:enable Naming/AccessorMethodName
+  require 'inspec/resources/user'
+  Inspec::Resources::User.prepend self
+end
 
 describe package('scponly') do
   it { should be_installed }
@@ -47,7 +74,7 @@ describe 'Checking no chroot user' do
     end
     describe file('/home/test2_ssh_key/incoming/copy_file') do
       it { should be_file }
-      it { should contain 'This is a test' }
+      its('content') { should include 'This is a test' }
     end
   end
 end
@@ -84,7 +111,7 @@ describe 'Checking chroot user' do
     end
     describe file('/var/opt/scponly-chroot/chroot_test2_ssh_key/incoming//copy_file') do
       it { should be_file }
-      it { should contain 'This is a test' }
+      its('content') { should include 'This is a test' }
     end
   end
 end

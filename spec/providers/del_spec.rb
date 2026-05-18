@@ -7,7 +7,7 @@ describe 'scponly_test::delete_user' do
       step_into: ['scponly_user'],
       log_level: :debug,
       platform:  'centos',
-      version:   '6.5',
+      version:   '8',
     ).converge(described_recipe)
   end
 

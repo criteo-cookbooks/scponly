@@ -1,22 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'berkshelf'
-gem 'kitchen-vagrant'
-gem 'chefspec'
-gem 'rake'
-gem 'foodcritic'
-gem 'chef-zero-scheduled-task'
-gem 'chef'
-gem 'cookbook-release'
-
-gem 'kitchen-transport-speedy'
-group :ec2 do
-  gem 'test-kitchen'
-  gem 'kitchen-ec2', git: 'https://github.com/criteo-forks/kitchen-ec2.git', branch: 'criteo'
-  gem 'winrm',       '>= 1.6'
-  gem 'winrm-fs',    '>= 0.3'
-  gem 'dotenv'
-end
-
-# Other gems should go after this comment
-gem 'rubocop', '=0.49.1'
+gem 'chef', '~> 18.8'
+gem 'chefspec', '>= 9.3'
+gem 'json', '~> 2.6'
+gem 'kitchen-dokken', '>= 2.20'
+gem 'kitchen-inspec', '>= 3.1'
+gem 'rake', '>= 13.3'
+gem 'rspec-expectations', '3.12.3' # https://github.com/chef/chefspec/issues/13
+gem 'rubocop', '= 1.81.7'
+gem 'test-kitchen', '>= 3.9'

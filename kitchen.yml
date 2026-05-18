@@ -1,0 +1,26 @@
+---
+driver:
+  name: dokken
+  privileged: true # needed for systemd to work in the container (for sshd)
+  chef_version: 17
+  pull_platform_image: false
+
+transport:
+  name: dokken
+
+provisioner:
+  name: dokken
+  named_run_list: test
+
+platforms:
+  - name: rockylinux-8
+    driver:
+      image: dokken/rockylinux-8
+      pid_one_command: /usr/lib/systemd/systemd # needed for systemd to work in the container (for sshd)
+
+suites:
+  - name: scponly
+    verifier:
+      name: inspec
+      inspec_tests:
+        - test/integration/default

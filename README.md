@@ -11,8 +11,8 @@ Requirements
 
 ### Platform
 The release was tested on:
-* RHEL 6.X
-* CentOS 6.X
+* RHEL 8.X
+* CentOS 8.X
 
 Cookbook Dependencies
 ------------
