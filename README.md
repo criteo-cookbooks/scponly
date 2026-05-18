@@ -20,6 +20,7 @@ Cookbook Dependencies
 
 Attributes
 ----------
+- `node['scponly']['install_epel_repo]` - determine whether epel repo should be installed (default: `true`)
 - `node['scponly']['pkgs']` - packages' name to install with version if needed (default: `{ scponly: nil }`)
 - `node['scponly']['shell']['scponly']['path']` - the shell path for `scponly` shell (default: `/usr/bin/scponly`)
 - `node['scponly']['shells']['scponlyc']['path']` - the shell path for `scponlyc` shell (default: `/usr/sbin/scponlyc`)
