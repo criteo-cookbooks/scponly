@@ -16,7 +16,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-include_recipe 'yum-epel'
+include_recipe 'yum-epel' if node['scponly']['install_epel_repo']
 
 node['scponly']['pkgs'].each do |pkg, vers|
   package pkg do

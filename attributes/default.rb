@@ -7,6 +7,7 @@
 #
 #
 
+default['scponly']['install_epel_repo'] = true
 default['scponly']['pkgs']['scponly'] = nil
 default['scponly']['shells']['scponly']['path']  = '/usr/bin/scponly'
 default['scponly']['shells']['scponlyc']['path'] = '/usr/sbin/scponlyc'
